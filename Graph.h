@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <list>
@@ -10,7 +11,7 @@ using namespace std;
 class Graph {
     struct Flight {
         int target;   // Target Airport
-        string code;  // Airline Code
+        string code;  // AirlineCode
     };
 
     struct Airport {
@@ -32,6 +33,7 @@ public:
 
     // Breadth-First Search
     void bfs(int v);
+
 };
 
 #endif

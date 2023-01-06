@@ -1,5 +1,5 @@
-#include <queue>
 #include "graph.h"
+#include <queue>
 
 // Constructor: nr airports and direction (default: undirected)
 Graph::Graph(int num) : n(num), airports(num+1) {
@@ -9,6 +9,7 @@ Graph::Graph(int num) : n(num), airports(num+1) {
 void Graph::addFlight(int src, int trgt, string code) {
     if (src<1 || src>n || trgt<1 || trgt>n) return;
     airports[src].connected.push_back({trgt, code});
+    airports[trgt].connected.push_back({src, code});
 }
 
 
@@ -25,9 +26,9 @@ void Graph::bfs(int v) {
             int w = e.target;
             if (!airports[w].visited) {
                 q.push(w);
-                airports[w].visited = true;
+                airports].visited = true;
                 airports[w].distance=airports[u].distance+1;
             }
         }
     }
-}
+} 
