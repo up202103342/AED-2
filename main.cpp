@@ -1,7 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "Graph.h"
+#include <string>
+#include <unordered_set>
+
+#include "Airport.h"
+#include "Airline.h"
+#include "Flight.h"
 
 using namespace std;
 
@@ -19,10 +24,10 @@ void readAirports() {
             }
             istringstream iss(line);
             string Code,Name,City,Country;
-            int Latitude,Longitude;
+            float Latitude,Longitude;
             iss >> Code >> Name >> City >> Country >> Latitude >> Longitude;
 
-            //...
+            Airport ap = Airport(Code, Name, City, Country, Latitude, Longitude);
 
         }
     }
@@ -44,13 +49,12 @@ void readAirlines() {
             string Code,Name,Callsign,Country;
             iss >> Code >> Name >> Callsign >> Country;
 
-            //...
-
+            Airline al = Airline(Code, Name, Callsign, Country);
         }
     }
 }
 
-void readFlights(Graph graph) {
+void readFlights() {
     ifstream infile("data/flights.csv");
     string line;
     bool first = true;
@@ -66,11 +70,33 @@ void readFlights(Graph graph) {
             string Source,Target,Airline;
             iss >> Source >> Target >> Airline;
 
-            //...
+            Flight fl = Flight(Source, Target, Airline);
 
         }
     }
 }
+
+//---------------------------------
+
+struct hFunc {
+    int operator() (Airport& ap) const {
+        unsigned long hash = 0;
+        for(int i = 0; i < ap.getCode().length(); i++)
+        {
+            hash = (hash * 37) + ap.getCode()[i];
+        }
+        return hash % 3023;
+    }
+};
+struct eqFunc {
+    bool operator() (Airport& ap1, Airport& ap2) const {
+        return ap1.getCode()==ap2.getCode() ;
+    }
+};
+
+typedef unordered_set<Airport, hFunc,eqFunc> hTable;
+
+//---------------------------------
 
 int main() {
     return 0;
