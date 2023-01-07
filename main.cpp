@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
-#include <unordered_set>
+#include <unordered_map>
 
 #include "Airport.h"
 #include "Airline.h"
@@ -14,27 +14,30 @@ using namespace std;
 //---------------------------------
 
 struct hFunc {
-    int operator() (const Airport& ap) const {
+    int operator() (const string& ap) const {
         unsigned long hash = 0;
-        for(int i = 0; i < ap.getCode().length(); i++)
-        {
-            hash = (hash * 37) + ap.getCode()[i];
+        for(int i = 0; i < ap.length(); i++) {
+            hash = (hash * 37) + int(ap[i]);
         }
         return hash % 3023;
     }
 };
 
 struct eqFunc {
-    bool operator() (const Airport& ap1, const Airport& ap2) const {
-        return ap1.getCode()==ap2.getCode() ;
+    bool operator() (const string& apCode1, const string& apCode2) const {
+        return apCode1==apCode2 ;
     }
 };
 
-typedef unordered_set<Airport, hFunc,eqFunc> hTable;
+typedef unordered_map<string, Airport, hFunc, eqFunc> hTable;
+
+Airport searchAp(hTable &hT, string const& apCode) {
+    return hT[apCode];
+}
 
 //---------------------------------
 
-void readAirports(Graph g) {
+void readAirports(hTable& hT1, Graph g) {
     int n;
     ifstream infile("data/airports.csv");
     string line;
@@ -42,14 +45,21 @@ void readAirports(Graph g) {
     while (getline(infile, line, ',')) {
         if (first) { first = false;}
         else {
+            for (int i = 0; i < line.length(); ++i) {
+                if (line[i] == ',') {
+                    line[i] = ' ';
+                }
+                else if (line[i] == ' ') {
+                    line[i] = '_';
+                }
+            }
             istringstream iss(line);
             string Code,Name,City,Country;
             float Latitude,Longitude;
             iss >> Code >> Name >> City >> Country >> Latitude >> Longitude;
             n++;
             Airport ap = Airport(n, Code, Name, City, Country, Latitude, Longitude);
-            hTable hT1;
-            hT1.insert(ap);
+            hT1[ap.getCode()] = ap;
         }
     }
     g = new Graph(n);
@@ -100,5 +110,11 @@ Airport getClosest(Airport ap, Graph g, hTable hT) {
 
 
 int main() {
+    hTable hT1;
+    Graph g;
+    readAirports(hT1, g);
+    if(hT1.empty()) return 1;
+    Airport ap = searchAp(hT1, "JFK");
+    cout << ap.getName();
     return 0;
 }

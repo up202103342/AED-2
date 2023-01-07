@@ -25,6 +25,8 @@ class Graph {
     vector<Airport> airports; // The list of airports being represented
 
 public:
+    // Default constructor
+    Graph();
     // Constructor: nr airports
     Graph(int airports);
 

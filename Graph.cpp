@@ -23,6 +23,8 @@ static float haversine(float lat1, float lon1,
     float c = 2 * asin(sqrt(a));
     return rad * c;
 }
+// Default constructor
+Graph::Graph() {}
 
 // Constructor: nr airports and direction (default: undirected)
 Graph::Graph(int num) : n(num), airports(num+1) {
