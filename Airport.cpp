@@ -35,26 +35,26 @@ void Airport::setLongitude(float longitude) {
     this->longitude = longitude;
 }
 
-string Airport::getCode() {
+string Airport::getCode() const{
     return code;
 }
 
-string Airport::getName() {
+string Airport::getName() const{
     return name;
 }
 
-string Airport::getCity() {
+string Airport::getCity() const{
     return city;
 }
 
-string Airport::getCountry() {
+string Airport::getCountry() const{
     return country;
 }
 
-float Airport::getLatitude() {
+float Airport::getLatitude() const{
     return latitude;
 }
 
-float Airport::getLongitude() {
+float Airport::getLongitude() const{
     return longitude;
 }

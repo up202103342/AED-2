@@ -10,6 +10,29 @@
 
 using namespace std;
 
+//---------------------------------
+
+struct hFunc {
+    int operator() (const Airport& ap) const {
+        unsigned long hash = 0;
+        for(int i = 0; i < ap.getCode().length(); i++)
+        {
+            hash = (hash * 37) + ap.getCode()[i];
+        }
+        return hash % 3023;
+    }
+};
+struct eqFunc {
+    bool operator() (const Airport& ap1, const Airport& ap2) const {
+        if (ap1.getCode() == ap2.getCode()) return true;
+        return false;
+    }
+};
+
+typedef unordered_set<Airport, hFunc,eqFunc> hTable;
+
+//---------------------------------
+
 void readAirports() {
     ifstream infile("data/airports.csv");
     string line;
@@ -28,6 +51,8 @@ void readAirports() {
             iss >> Code >> Name >> City >> Country >> Latitude >> Longitude;
 
             Airport ap = Airport(Code, Name, City, Country, Latitude, Longitude);
+            hTable hT1;
+            hT1.insert(ap);
 
         }
     }
@@ -76,27 +101,6 @@ void readFlights() {
     }
 }
 
-//---------------------------------
-
-struct hFunc {
-    int operator() (Airport& ap) const {
-        unsigned long hash = 0;
-        for(int i = 0; i < ap.getCode().length(); i++)
-        {
-            hash = (hash * 37) + ap.getCode()[i];
-        }
-        return hash % 3023;
-    }
-};
-struct eqFunc {
-    bool operator() (Airport& ap1, Airport& ap2) const {
-        return ap1.getCode()==ap2.getCode() ;
-    }
-};
-
-typedef unordered_set<Airport, hFunc,eqFunc> hTable;
-
-//---------------------------------
 
 int main() {
     return 0;
