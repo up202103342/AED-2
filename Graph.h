@@ -34,6 +34,8 @@ public:
     // Breadth-First Search
     void bfs(int v);
 
+    list<int> getConnectedAirports(int n);
+
 };
 
 #endif

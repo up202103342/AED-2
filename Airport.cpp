@@ -2,7 +2,8 @@
 
 Airport::Airport() {}
 
-Airport::Airport(string code, string name, string city, string country, float latitude, float longitude) {
+Airport::Airport(int id, string code, string name, string city, string country, float latitude, float longitude) {
+    this->id = id;
     this->code = code;
     this->name = name;
     this->city = city;
@@ -33,6 +34,10 @@ void Airport::setLatitude(float latitude) {
 
 void Airport::setLongitude(float longitude) {
     this->longitude = longitude;
+}
+
+int Airport::getId() {
+    return id;
 }
 
 string Airport::getCode() {

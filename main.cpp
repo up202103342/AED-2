@@ -2,15 +2,18 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include <unordered_set>
 
 #include "Airport.h"
 #include "Airline.h"
 #include "Flight.h"
+#include "Graph.h"
 
 using namespace std;
 
 void readAirports() {
+    int n;
     ifstream infile("data/airports.csv");
     string line;
     bool first = true;
@@ -26,11 +29,11 @@ void readAirports() {
             string Code,Name,City,Country;
             float Latitude,Longitude;
             iss >> Code >> Name >> City >> Country >> Latitude >> Longitude;
-
-            Airport ap = Airport(Code, Name, City, Country, Latitude, Longitude);
-
+            n++;
+            Airport ap = Airport(n, Code, Name, City, Country, Latitude, Longitude);
         }
     }
+    Graph g(n);
 }
 
 void readAirlines() {
@@ -54,7 +57,7 @@ void readAirlines() {
     }
 }
 
-void readFlights() {
+void readFlights(Graph g) {
     ifstream infile("data/flights.csv");
     string line;
     bool first = true;
@@ -71,9 +74,40 @@ void readFlights() {
             iss >> Source >> Target >> Airline;
 
             Flight fl = Flight(Source, Target, Airline);
-
         }
     }
+}
+
+static float haversine(float lat1, float lon1,
+                       float lat2, float lon2)
+{
+    // distance between latitudes
+    // and longitudes
+    float dLat = (lat2 - lat1) *
+                  M_PI / 180.0;
+    float dLon = (lon2 - lon1) *
+                  M_PI / 180.0;
+
+    // convert to radians
+    lat1 = (lat1) * M_PI / 180.0;
+    lat2 = (lat2) * M_PI / 180.0;
+
+    // apply formulae
+    float a = pow(sin(dLat / 2), 2) +
+               pow(sin(dLon / 2), 2) *
+               cos(lat1) * cos(lat2);
+    float rad = 6371;
+    float c = 2 * asin(sqrt(a));
+    return rad * c;
+}
+
+
+void getClosest(Graph g, Airport a1){
+    int d=INT64_MAX;
+    for(auto a2 : g.getConnectedAirports(a1.getId())){
+        if(d< haversine(a1.getLatitude(), a1.getLongitude()), )
+    }
+    return ;
 }
 
 //---------------------------------
@@ -88,6 +122,7 @@ struct hFunc {
         return hash % 3023;
     }
 };
+
 struct eqFunc {
     bool operator() (Airport& ap1, Airport& ap2) const {
         return ap1.getCode()==ap2.getCode() ;
