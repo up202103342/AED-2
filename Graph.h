@@ -35,6 +35,15 @@ public:
     void bfs(int v);
 
     list<int> getConnectedAirports(int n);
+    int getClosestAirport(int n);
+    list<int> getShortestTrip(int src, int tgt);
+    int flightsFromAirport(int n);
+    int airlinesFlyingFromAirport(int n);
+    int citiesFlownToFromAirport(int n);
+    int countriesFlownToFromAirport(int n);
+    int numberOfAirportsReachableInNFLights(int src, int n);
+    int numberOfCitiesReachableInNFLights(int src, int n);
+    int numberOfCountriesReachableInNFLights(int src, int n);
 
 };
 

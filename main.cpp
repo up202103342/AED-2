@@ -7,7 +7,6 @@
 
 #include "Airport.h"
 #include "Airline.h"
-#include "Flight.h"
 #include "Graph.h"
 
 using namespace std;
@@ -35,19 +34,14 @@ typedef unordered_set<Airport, hFunc,eqFunc> hTable;
 
 //---------------------------------
 
-void readAirports() {
+void readAirports(Graph g) {
     int n;
     ifstream infile("data/airports.csv");
     string line;
     bool first = true;
-    while (getline(infile, line)) {
+    while (getline(infile, line, ',')) {
         if (first) { first = false;}
         else {
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ',') {
-                    line[i] = ' ';
-                }
-            }
             istringstream iss(line);
             string Code,Name,City,Country;
             float Latitude,Longitude;
@@ -58,21 +52,17 @@ void readAirports() {
             hT1.insert(ap);
         }
     }
-    Graph g(n);
+    g = new Graph(n);
+    return hT1;
 }
 
 void readAirlines() {
     ifstream infile("data/airlines.csv");
     string line;
     bool first = true;
-    while (getline(infile, line)) {
+    while (getline(infile, line, ',')) {
         if (first) { first = false;}
         else {
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ',') {
-                    line[i] = ' ';
-                }
-            }
             istringstream iss(line);
             string Code,Name,Callsign,Country;
             iss >> Code >> Name >> Callsign >> Country;
@@ -82,58 +72,30 @@ void readAirlines() {
     }
 }
 
-void readFlights(Graph g) {
+void readFlights(Graph g, hTable hT) {
     ifstream infile("data/flights.csv");
     string line;
     bool first = true;
-    while (getline(infile, line)) {
+    while (getline(infile, line, ',')) {
         if (first) { first = false;}
         else {
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ',') {
-                    line[i] = ' ';
-                }
-            }
             istringstream iss(line);
             string Source,Target,Airline;
             iss >> Source >> Target >> Airline;
 
-            Flight fl = Flight(Source, Target, Airline);
+            int src = ;
+            int tgt = ;
+            g.addFlight(src, tgt, Airline);
         }
     }
 }
 
-static float haversine(float lat1, float lon1,
-                       float lat2, float lon2)
-{
-    // distance between latitudes
-    // and longitudes
-    float dLat = (lat2 - lat1) *
-                  M_PI / 180.0;
-    float dLon = (lon2 - lon1) *
-                  M_PI / 180.0;
-
-    // convert to radians
-    lat1 = (lat1) * M_PI / 180.0;
-    lat2 = (lat2) * M_PI / 180.0;
-
-    // apply formulae
-    float a = pow(sin(dLat / 2), 2) +
-               pow(sin(dLon / 2), 2) *
-               cos(lat1) * cos(lat2);
-    float rad = 6371;
-    float c = 2 * asin(sqrt(a));
-    return rad * c;
+Airport getClosest(Airport ap, Graph g, hTable hT) {
+    int n = g.getClosestAirport(ap.getCode());
+    return hT[n];
 }
 
 
-void getClosest(Graph g, Airport a1){
-    int d=INT64_MAX;
-    for(auto a2 : g.getConnectedAirports(a1.getId())){
-        if(d< haversine(a1.getLatitude(), a1.getLongitude()), )
-    }
-    return ;
-}
 
 
 
