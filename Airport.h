@@ -16,13 +16,13 @@ public:
     void setCountry(string country);
     void setLatitude(float latitude);
     void setLongitude(float longitude);
-    int getId();
-    string getCode();
-    string getName();
-    string getCity();
-    string getCountry();
-    float getLatitude();
-    float getLongitude();
+    int getId() const;
+    string getCode() const;
+    string getName() const;
+    string getCity() const;
+    string getCountry() const;
+    float getLatitude() const;
+    float getLongitude() const;
 private:
     int id;
     string code;

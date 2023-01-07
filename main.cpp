@@ -12,6 +12,29 @@
 
 using namespace std;
 
+//---------------------------------
+
+struct hFunc {
+    int operator() (const Airport& ap) const {
+        unsigned long hash = 0;
+        for(int i = 0; i < ap.getCode().length(); i++)
+        {
+            hash = (hash * 37) + ap.getCode()[i];
+        }
+        return hash % 3023;
+    }
+};
+
+struct eqFunc {
+    bool operator() (const Airport& ap1, const Airport& ap2) const {
+        return ap1.getCode()==ap2.getCode() ;
+    }
+};
+
+typedef unordered_set<Airport, hFunc,eqFunc> hTable;
+
+//---------------------------------
+
 void readAirports() {
     int n;
     ifstream infile("data/airports.csv");
@@ -31,6 +54,8 @@ void readAirports() {
             iss >> Code >> Name >> City >> Country >> Latitude >> Longitude;
             n++;
             Airport ap = Airport(n, Code, Name, City, Country, Latitude, Longitude);
+            hTable hT1;
+            hT1.insert(ap);
         }
     }
     Graph g(n);
@@ -110,28 +135,7 @@ void getClosest(Graph g, Airport a1){
     return ;
 }
 
-//---------------------------------
 
-struct hFunc {
-    int operator() (Airport& ap) const {
-        unsigned long hash = 0;
-        for(int i = 0; i < ap.getCode().length(); i++)
-        {
-            hash = (hash * 37) + ap.getCode()[i];
-        }
-        return hash % 3023;
-    }
-};
-
-struct eqFunc {
-    bool operator() (Airport& ap1, Airport& ap2) const {
-        return ap1.getCode()==ap2.getCode() ;
-    }
-};
-
-typedef unordered_set<Airport, hFunc,eqFunc> hTable;
-
-//---------------------------------
 
 int main() {
     return 0;
