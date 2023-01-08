@@ -35,6 +35,10 @@ string Graph::airportIDToCode(int n) { // O(1)
     return airports[n].code;
 }
 
+void Graph::setAirportCode(int n, string code) { // O(1)
+    airports[n].code = code;
+}
+
 // Add edge from source to destination with a certain weight
 void Graph::addFlight(int src, int trgt, string code) { // O(1)
     if (src<1 || src>n || trgt<1 || trgt>n) return;
@@ -151,17 +155,17 @@ list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, f
     list<int> aps2;
     if (src == -1) {
         if (lg1 == -1) {
-            for (auto ap : hT) {
-                if ((ap.second.getLongitude() == lg1) && (ap.second.getLatitude() == lt1)) {
-                    aps1.push_back(ap.second.getId());
+            for (int i = 1; i <= n; i++) {
+                if ((hT[airports[i].code].getLongitude() == lg1) && (hT[airports[i].code].getLatitude() == lt1)) {
+                    aps1.push_back(hT[airports[i].code].getId());
                     break;
                 }
             }
         }
         else {
-            for (auto ap : hT) {
-                if (ap.second.getCity() == city1) {
-                    aps1.push_back(ap.second.getId());
+            for (int i = 1; i <= n; i++) {
+                if (hT[airports[i].code].getCity() == city1) {
+                    aps1.push_back(hT[airports[i].code].getId());
                     break;
                 }
             }
@@ -171,17 +175,17 @@ list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, f
     else aps1.push_back(src);
     if (tgt == -1) {
         if (lg2 == -1) {
-            for (auto ap : hT) {
-                if ((ap.second.getLongitude() == lg2) && (ap.second.getLatitude() == lt2)) {
-                    aps2.push_back(ap.second.getId());
+            for (int i = 1; i <= n; i++) {
+                if ((hT[airports[i].code].getLongitude() == lg2) && (hT[airports[i].code].getLatitude() == lt2)) {
+                    aps2.push_back(hT[airports[i].code].getId());
                     break;
                 }
             }
         }
         else {
-            for (auto ap : hT) {
-                if (ap.second.getCity() == city2) {
-                    aps2.push_back(ap.second.getId());
+            for (int i = 1; i <= n; i++) {
+                if (hT[airports[i].code].getCity() == city2) {
+                    aps2.push_back(hT[airports[i].code].getId());
                     break;
                 }
             }
@@ -208,7 +212,7 @@ int Graph::flightsFromAirport(int n) { // O(1)
 
 int Graph::airlinesFlyingFromAirport(int n) { // O(V * E)
     list<string> airlines;
-    for (auto u : airports[n].connected) {
+    for (Flight u : airports[n].connected) {
         if (!flightInAirlines(u.code, airlines)) {
             airlines.push_back(u.code);
         }

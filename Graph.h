@@ -6,6 +6,7 @@
 #include <vector>
 #include <list>
 #include "hashTable.cpp"
+#include "Airport.h"
 
 using namespace std;
 
@@ -33,6 +34,8 @@ public:
 
     // Add Flight from source to target
     void addFlight(int src, int trgt, string code);
+
+    void setAirportCode(int n, string code);
 
     // Breadth-First Search
     void bfs(int v);

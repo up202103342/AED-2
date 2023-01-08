@@ -10,8 +10,8 @@
 
 using namespace std;
 
-Graph readAirports(hTable& hT1) { // O(V)
-    int n;
+Graph readAirports(hTable& hT1) { // O(V * n)
+    int n = 0;
     ifstream infile("data/airports.csv");
     string line;
     bool first = true;
@@ -56,7 +56,7 @@ Graph readAirports(hTable& hT1) { // O(V)
     return g;
 }
 
-void readAirlines(vector<Airline> & airlines) { // O(n)
+void readAirlines(vector<Airline> & airlines) { // O(n^2)
     ifstream infile("data/airlines.csv");
     string line;
     bool first = true;
@@ -93,13 +93,18 @@ void readAirlines(vector<Airline> & airlines) { // O(n)
     }
 }
 
-void readFlights(Graph &g, hTable &hT) { // O(E)
+void readFlights(Graph &g, hTable &hT) { // O(E * n)
     ifstream infile("data/flights.csv");
     string line;
     bool first = true;
     while (getline(infile, line)) {
         if (first) { first = false;}
         else {
+            for (int i = 0; i < line.length(); ++i) {
+                if (line[i] == ',') {
+                    line[i] = ' ';
+                }
+            }
             istringstream iss(line);
             string Source,Target,Airline;
             iss >> Source >> Target >> Airline;
@@ -118,11 +123,12 @@ Airport getClosest(Airport ap, Graph g, hTable hT) { // O(E)
 
 int main() {
     hTable hT1;
-    Graph g;
     vector<Airline> airlines;
-    readAirports(hT1);
+    Graph g = readAirports(hT1);
     readAirlines(airlines);
     readFlights(g, hT1);
-    //cout << g.airlinesFlyingFromAirport(10);
+    for (auto ap : hT1) {
+        g.setAirportCode((ap.second).getId(), (ap.second).getCode());
+    }
     return 0;
 }
