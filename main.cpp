@@ -81,7 +81,7 @@ Airport getClosest(Airport ap, Graph g, hTable hT) { // O(E)
 int main() {
     hTable hT1;
     readAirports(hT1);
-    if(hT1.empty()) return 1;
+    /*if(hT1.empty()) return 1;*/
     Airport ap = hT1["JFK"];
     cout << ap.getName();
     return 0;
