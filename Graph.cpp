@@ -86,7 +86,7 @@ bool Graph::flightInAirlines(string code, list<string> airlines) { //O(n)
 list<int> Graph::getConnectedAirports(int n){ // O(E)
     list<int> aps;
     for(auto a : airports[n].connected) {
-        if (!intInList(a, aps)) {
+        if (!intInList(a.target, aps)) {
             aps.push_back(a.target);
         }
     }
@@ -95,7 +95,7 @@ list<int> Graph::getConnectedAirports(int n){ // O(E)
 
 
 int Graph::getClosestAirport(int n, hTable hT) { // O(E)
-    int d=INT64_MAX;
+    int d=INT32_MAX;
     int res;
     auto src = searchAp(hT, airports[n].code);
     for (Flight x : airports[n].connected){
@@ -190,7 +190,7 @@ list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, f
     }
     else aps2.push_back(tgt);
     int min, s, t;
-    min = INT64_MAX;
+    min = INT32_MAX;
     for (int i : aps1) {
         for (int j : aps2) {
             if (getShortestTrip(i, j, airlines).size() < min) {

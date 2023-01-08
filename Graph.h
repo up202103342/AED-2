@@ -55,6 +55,7 @@ public:
     vector<int> airlineStats(string airline, hTable hT);
     vector<int> topKAirportsWithMoreFlights(int k);
     vector<int> topKAirportsWithMoreAirlines(int k);
+    int airlineDiameter(string airline);
 };
 
 #endif
