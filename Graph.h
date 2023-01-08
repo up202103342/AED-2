@@ -48,6 +48,7 @@ public:
     int numberOfCitiesReachableInNFlights(int src, int n, hTable hT);
     int numberOfCountriesReachableInNFlights(int src, int n, hTable hT);
     list<int> getLocalToLocal(int src, int tgt, string city1, string city2, float lg1, float lt1, float lg2, float lt2, hTable hT, list<string> airlines);
+    string airportIDToCode(int n);
 
 };
 

@@ -75,7 +75,7 @@ void readFlights(Graph g, hTable hT) {
 
 Airport getClosest(Airport ap, Graph g, hTable hT) {
     int n = g.getClosestAirport(ap.getCode());
-    return hT[n];
+    return hT[g.airportIDToCode(n)];
 }
 
 

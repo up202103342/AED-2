@@ -31,6 +31,10 @@ Graph::Graph() {}
 Graph::Graph(int num) : n(num), airports(num+1) {
 }
 
+string Graph::airportIDToCode(int n) {
+    return airports[n].code;
+}
+
 // Add edge from source to destination with a certain weight
 void Graph::addFlight(int src, int trgt, string code) {
     if (src<1 || src>n || trgt<1 || trgt>n) return;
