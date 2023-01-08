@@ -284,7 +284,7 @@ void Display::displayVoo(hTable hT1, Graph g) {
     }
     cout << '\n' << "|                                                                     |";
     cout << '\n' << "|                                                                     |";
-    cout << '\n' << "|  <- Go to Menu (9)                                                  |";
+    cout << '\n' << "|                                                                     |";
     cout << '\n' << "|  <- Go Back (0)                                                     |";
     cout << '\n' << "l---------------------------------------------------------------------l";
     cout << '\n';
@@ -421,15 +421,18 @@ void Display::processInput(string input) {
     else if (state=="localChegada" && letterPicked=="C") {
         coordLat2 = stof(inputVec[0]);
         coordLon2 = stof(inputVec[1]);
-        setState("localChegada");
+        setState("voo");
     }
     else if (state=="localChegada" && letterPicked=="A") {
         apCode2 = input;
-        setState("localChegada");
+        setState("voo");
     }
     else if (state=="localChegada" && letterPicked=="B") {
         city2 = input;
-        setState("localChegada");
+        setState("vpp");
+    }
+    else if (state=="voo" && input == "0") {
+        setState("menu");
     }
     else if (input=="1" && state=="info") {
         setNumPicked(2);
