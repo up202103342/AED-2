@@ -72,7 +72,7 @@ list<int> Graph::getConnectedAirports(int n){
 int Graph::getClosestAirport(int n, hTable hT) {
     int d=INT64_MAX;
     int res;
-    Airport src = searchAp(hT, airports[n].code)
+    Airport src = searchAp(hT, airports[n].code);
     for (auto x : airports[n].connected){
         Airport ap = searchAp(hT, airports[x.target].code);
         if (d > haversine(src.getLatitude(), src.getLongitude(), ap.getLatitude(), ap.getLongitude())) {
@@ -128,22 +128,22 @@ list<int> Graph::getShortestTrip(int src, int tgt, list<string> airlines) {
     return res;
 }
 
-list<int> getLocalToLocal(int src, int tgt, string city1, string city2, float lg1, float lt1, float lg2, float lt2, hTable hT, list<string> airlines) {
+list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, float lg1, float lt1, float lg2, float lt2, hTable hT, list<string> airlines) {
     list<int> aps1;
     list<int> aps2;
     if (src == -1) {
         if (lg1 == -1) {
-            for (Airport ap : hT) {
-                if ((ap.getLongitude() == lg1) && (ap.getLatitude() == lt1)) {
-                    aps1.push_back(ap.getId());
+            for (auto ap : hT) {
+                if ((ap.second.getLongitude() == lg1) && (ap.second.getLatitude() == lt1)) {
+                    aps1.push_back(ap.second.getId());
                     break;
                 }
             }
         }
         else {
-            for (Airport ap : hT) {
-                if (ap.getCity() == city1) {
-                    aps1.push_back(ap);
+            for (auto ap : hT) {
+                if (ap.second.getCity() == city1) {
+                    aps1.push_back(ap.second.getId());
                     break;
                 }
             }
@@ -153,17 +153,17 @@ list<int> getLocalToLocal(int src, int tgt, string city1, string city2, float lg
     else aps1.push_back(src);
     if (tgt == -1) {
         if (lg2 == -1) {
-            for (Airport ap : hT) {
-                if ((ap.getLongitude() == lg2) && (ap.getLatitude() == lt2)) {
-                    aps2.push_back(ap.getId());
+            for (auto ap : hT) {
+                if ((ap.second.getLongitude() == lg2) && (ap.second.getLatitude() == lt2)) {
+                    aps2.push_back(ap.second.getId());
                     break;
                 }
             }
         }
         else {
-            for (Airport ap : hT) {
-                if (ap.getCity() == city2) {
-                    aps2.push_back(ap);
+            for (auto ap : hT) {
+                if (ap.second.getCity() == city2) {
+                    aps2.push_back(ap.second.getId());
                     break;
                 }
             }
@@ -198,7 +198,7 @@ int Graph::airlinesFlyingFromAirport(int n) {
     return airlines.size();
 }
 
-int citiesFlownToFromAirport(int n, hTable hT) {
+int Graph::citiesFlownToFromAirport(int n, hTable hT) {
     list<string> cities;
     for (auto u : airports[n].connected) {
         string city = searchAp(hT, u.code).getCity();
@@ -208,7 +208,7 @@ int citiesFlownToFromAirport(int n, hTable hT) {
     }
     return cities.size();
 }
-int countriesFlownToFromAirport(int n, hTable hT) {
+int Graph::countriesFlownToFromAirport(int n, hTable hT) {
     list<string> countries;
     for (auto u : airports[n].connected) {
         string country = searchAp(hT, u.code).getCountry();
@@ -218,7 +218,7 @@ int countriesFlownToFromAirport(int n, hTable hT) {
     }
     return countries.size();
 }
-int numberOfAirportsReachableInNFlights(int src, int n) {
+int Graph::numberOfAirportsReachableInNFlights(int src, int n) {
     bfs(src);
     int res = 0;
     for (auto a : airports) {
@@ -230,7 +230,7 @@ int numberOfAirportsReachableInNFlights(int src, int n) {
     }
     return res;
 }
-int numberOfCitiesReachableInNFlights(int src, int n, hTable hT) {
+int Graph::numberOfCitiesReachableInNFlights(int src, int n, hTable hT) {
     bfs(src);
     list<string> cities;
     for (int i = 1; i <= airports.size(); i++) {
@@ -245,7 +245,7 @@ int numberOfCitiesReachableInNFlights(int src, int n, hTable hT) {
     }
     return cities.size();
 }
-int numberOfCountriesReachableInNFlights(int src, int n, hTable hT) {
+int Graph::numberOfCountriesReachableInNFlights(int src, int n, hTable hT) {
     bfs(src);
     list<string> countries;
     for (int i = 1; i <= airports.size(); i++) {

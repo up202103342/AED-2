@@ -39,7 +39,7 @@ public:
 
     list<int> getConnectedAirports(int n);
     int getClosestAirport(int n, hTable hT);
-    list<int> getShortestTrip(int src, int tgt);
+    list<int> getShortestTrip(int src, int tgt, list<string> airlines);
     int flightsFromAirport(int n);
     int airlinesFlyingFromAirport(int n);
     int citiesFlownToFromAirport(int n, hTable hT);
