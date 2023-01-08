@@ -11,6 +11,7 @@
 
 using namespace std;
 
+//Esta funcao le o ficheiro airports.csv e introduz os dados na hash table, criando ed evolvendo depois o grafo. Complexidade temporal: O(V * n)
 Graph readAirports(hTable& hT1) { // O(V * n)
     int n = 0;
     ifstream infile("data/airports.csv");
@@ -57,6 +58,7 @@ Graph readAirports(hTable& hT1) { // O(V * n)
     return g;
 }
 
+//Esta funcao le o ficheiro airlines.csv e introduz os dados no vetor airlines. Complexidade temporal: O(n^2)
 void readAirlines(vector<Airline> & airlines) { // O(n^2)
     ifstream infile("data/airlines.csv");
     string line;
@@ -93,7 +95,7 @@ void readAirlines(vector<Airline> & airlines) { // O(n^2)
         }
     }
 }
-
+//Esta funcao le o ficheiro flights.csv e introduz os dados no grafo. Complexidade temporal: O(E * n)
 void readFlights(Graph &g, hTable &hT) { // O(E * n)
     ifstream infile("data/flights.csv");
     string line;
@@ -117,6 +119,7 @@ void readFlights(Graph &g, hTable &hT) { // O(E * n)
     }
 }
 
+//Esta funcao devolve o aeroporto mais proximo a um dado aeroporto. Complexidade temporal: O(E)
 Airport getClosest(Airport ap, Graph g, hTable hT) { // O(E)
     int n = g.getClosestAirport(ap.getId(), hT);
     return hT[g.airportIDToCode(n)];
