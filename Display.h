@@ -22,8 +22,6 @@ class Display {
     float coordLon2;
     string apCode1;
     string apCode2;
-
-private:
     string city1;
     string city2;
 
@@ -40,7 +38,7 @@ public:
 
     void displayLocalChegada();
 
-    void displayVoo();
+    void displayVoo(hTable, Graph);
 
     void displayInfo();
 
@@ -67,6 +65,8 @@ public:
     void setCoordLon1(const float &coordLon1) ;
     void setCoordLat2(const float &coordLat2) ;
     void setCoordLon2(const float &coordLon2) ;
+    void setCity1(const string &city1);
+    void setCity2(const string &city2);
 
     void reset();
 };

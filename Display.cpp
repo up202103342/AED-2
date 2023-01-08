@@ -1,6 +1,6 @@
 #include "Display.h"
 
-Display::Display(): state("menu"), numPicked(-1) {}
+Display::Display(): state("menu"), numPicked(-1), apCode1(""), apCode2("") {}
 
 
 void Display::displayMenu() {
@@ -59,7 +59,7 @@ void Display::displayLocalPartida() {
     }
     else if (numPicked == 2) {
         partidaType = "|                     Escolha a cidade pretendida                     |"
-                      "\n|                   (insira o code correspondente )                   |";
+                      "\n|                   (insira o nome correspondente )                   |";
     }
     if (numPicked == 3) {
         partidaType = "|                 Escolha as coordenadas pretendidas                  |"
@@ -89,7 +89,7 @@ void Display::displayLocalChegada() {
     }
     else if (letterPicked == "B") {
         chegadaType = "|                     Escolha a cidade pretendida                     |"
-                      "\n|                   (insira o code correspondente )                   |";
+                      "\n|                   (insira o nome correspondente )                   |";
     }
     if (letterPicked == "C") {
         chegadaType = "|                 Escolha as coordenadas pretendidas                  |"
@@ -110,19 +110,24 @@ void Display::displayLocalChegada() {
     cout << '\n';
 }
 
-void Display::displayVoo() {
+void Display::displayVoo(hTable hT1, Graph g) {
     list<int> listFlights;
-    listFlights = Graph::getLocalToLocal()
+    list<string> airlines;
+    int src = hT1[apCode1].getId();
+    listFlights = g.getLocalToLocal(src, hT1[apCode2].getId(), city1, city2, coordLat1, coordLon1, coordLat2, coordLon2, hT1, airlines);
     cout << '\n' << "l---------------------------------------------------------------------l";
     cout << '\n' << "|                                                                     |";
     cout << '\n' << "|                            AirTrans App                             |";
     cout << '\n' << "|                          Plano de Viagem                            |";
     cout << '\n' << "|---------------------------------------------------------------------|";
     cout << '\n' << "|                                                                     |";
-    cout << '\n' << "|  O trajeto mais curto para o seu destino é:                         |";
+    cout << '\n' << "|  O trajeto mais curto para o seu destino:                           |";
     cout << '\n' << "|                                                                     |";
     cout << '\n' << "|                                                                     |";
-    cout << '\n' << listFlights;
+    cout << '\n';
+    for (auto i: listFlights) {
+        cout << g.airportIDToCode(i) << "  ->  ";
+    }
     cout << '\n' << "|                                                                     |";
     cout << '\n' << "|                                                                     |";
     cout << '\n' << "|  <- Go to Menu (9)                                                  |";
@@ -136,6 +141,32 @@ void Display::displayInfo() {
 }
 
 void Display::displayAbout() {
+
+}
+
+//----------------------------------------
+
+void Display::reset() {
+    if (state == "localPartida") {
+        setApCode1("");
+        setCoordLat1(0);
+        setCoordLon1(0);
+    }
+    else if (state == "localChegada") {
+        setApCode2("");
+        setCoordLat2(0);
+        setCoordLon2(0);
+    }
+    else {
+        setApCode1("");
+        setCoordLat1(0);
+        setCoordLon1(0);
+        setCity1("");
+        setApCode2("");
+        setCoordLat2(0);
+        setCoordLon2(0);
+        setCity2("");
+    }
 
 }
 
@@ -215,6 +246,7 @@ void Display::processInput(string input) {
 
     //-------------------------------------------------
     else if (input=="0" && state=="localPartida") {
+        reset();
         setState("locais");
     }
     else if (state=="localPartida" && numPicked==3) {
@@ -233,6 +265,7 @@ void Display::processInput(string input) {
 
     //-------------------------------------------------
     else if (input=="0" && state=="localChegada") {
+        reset();
         setState("localPartida");
     }
     else if (state=="localChegada" && letterPicked=="C") {
@@ -250,11 +283,9 @@ void Display::processInput(string input) {
     }
 }
 
-void Display::reset() {
-    setApCode1("");
-    setApCode2("");
-    setCoordLat1(0);
-}
+//-------------------------------------------------------------
+
+
 
 string Display::getState() const {
     return state;
@@ -334,6 +365,14 @@ void Display::setCoordLat2(const float &coordLat2) {
 
 void Display::setCoordLon2(const float &coordLaon2) {
     Display::coordLat1 = coordLon2;
+}
+
+void Display::setCity1(const string &city1) {
+    Display::city1 = city1;
+}
+
+void Display::setCity2(const string &city2) {
+    Display::city2 = city2;
 }
 
 

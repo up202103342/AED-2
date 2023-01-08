@@ -145,7 +145,10 @@ int main() {
         else if (dp.getState()=="localPartida") dp.displayLocalPartida();
         else if (dp.getState()=="localChegada") {
             dp.displayLocalChegada();
-            dp.displayVoo();
+            cout << "Enter input:\n";
+            getline(std::cin, input);
+            cout << ".............\n";
+            dp.displayVoo(hT1, g);
         }
     }
     return 0;
