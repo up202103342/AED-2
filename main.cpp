@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Graph readAirports(hTable& hT1) {
+Graph readAirports(hTable& hT1) { // O(V)
     int n;
     ifstream infile("data/airports.csv");
     string line;
@@ -39,7 +39,7 @@ Graph readAirports(hTable& hT1) {
     return g;
 }
 
-void readAirlines() {
+void readAirlines() { // O(n)
     ifstream infile("data/airlines.csv");
     string line;
     bool first = true;
@@ -55,7 +55,7 @@ void readAirlines() {
     }
 }
 
-void readFlights(Graph g, hTable hT) {
+void readFlights(Graph g, hTable hT) { // O(E)
     ifstream infile("data/flights.csv");
     string line;
     bool first = true;
@@ -73,7 +73,7 @@ void readFlights(Graph g, hTable hT) {
     }
 }
 
-Airport getClosest(Airport ap, Graph g, hTable hT) {
+Airport getClosest(Airport ap, Graph g, hTable hT) { // O(E)
     int n = g.getClosestAirport(ap.getId(), hT);
     return hT[g.airportIDToCode(n)];
 }

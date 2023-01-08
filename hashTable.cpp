@@ -22,6 +22,6 @@ struct eqFunc {
 
 typedef unordered_map<string, Airport, hFunc, eqFunc> hTable;
 
-Airport searchAp(hTable &hT, string const& apCode) {
+Airport searchAp(hTable &hT, string const& apCode) { // O(1)
     return hT[apCode];
 }
