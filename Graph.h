@@ -38,7 +38,7 @@ public:
     void bfs(int v);
 
     list<int> getConnectedAirports(int n);
-    int getClosestAirport(int n);
+    int getClosestAirport(int n, hTable hT);
     list<int> getShortestTrip(int src, int tgt);
     int flightsFromAirport(int n);
     int airlinesFlyingFromAirport(int n);

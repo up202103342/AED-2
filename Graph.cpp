@@ -65,13 +65,15 @@ list<int> Graph::getConnectedAirports(int n){
 }
 
 
-void Graph::getClosestAirport(int n) {
+int Graph::getClosestAirport(int n, hTable hT) {
     int d=INT64_MAX;
     int res;
-    for (int x : airports[n].connected){
-        if (d > haversine(airports[n].getLatitude(), airports[n].getLongitude(), airports[x].getLatitude(), airports[x].getLongitude())) {
-            d = haversine(airports[n].getLatitude(), airports[n].getLongitude(), airports[x].getLatitude(), airports[x].getLongitude());
-            res = x;
+    Airport src = searchAp(hT, airports[n].code)
+    for (auto x : airports[n].connected){
+        Airport ap = searchAp(hT, airports[x.target].code);
+        if (d > haversine(src.getLatitude(), src.getLongitude(), ap.getLatitude(), ap.getLongitude())) {
+            d = haversine(src.getLatitude(), src.getLongitude(), ap.getLatitude(), ap.getLongitude());
+            res = x.target;
         }
     }
     return x;
