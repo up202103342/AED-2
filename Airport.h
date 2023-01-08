@@ -24,8 +24,6 @@ public:
     float getLatitude() const;
     float getLongitude() const;
 
-    int getID();
-
 private:
     int id;
     string code;

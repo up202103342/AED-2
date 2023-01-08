@@ -66,8 +66,8 @@ void readFlights(Graph g, hTable hT) { // O(E)
             string Source,Target,Airline;
             iss >> Source >> Target >> Airline;
 
-            int src = searchAp(hT, Source).getID();
-            int tgt = searchAp(hT, Target).getID();
+            int src = searchAp(hT, Source).getId();
+            int tgt = searchAp(hT, Target).getId();
             g.addFlight(src, tgt, Airline);
         }
     }
