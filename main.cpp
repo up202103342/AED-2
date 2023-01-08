@@ -74,7 +74,7 @@ void readFlights(Graph g, hTable hT) {
 }
 
 Airport getClosest(Airport ap, Graph g, hTable hT) {
-    int n = g.getClosestAirport(ap.getCode());
+    int n = g.getClosestAirport(ap.getId(), hT);
     return hT[g.airportIDToCode(n)];
 }
 
@@ -84,7 +84,7 @@ Airport getClosest(Airport ap, Graph g, hTable hT) {
 
 int main() {
     hTable hT1;
-    readAirports(hT1, g);
+    readAirports(hT1);
     if(hT1.empty()) return 1;
     Airport ap = searchAp(hT1, "JFK");
     cout << ap.getName();
