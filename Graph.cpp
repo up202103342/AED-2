@@ -1,10 +1,11 @@
 #include "Graph.h"
 #include <queue>
+#include "cmath"
 
 static float haversine(float lat1, float lon1,
                        float lat2, float lon2)
 {
-    // distance between latitudes
+    // distance between latitudesS
     // and longitudes
     float dLat = (lat2 - lat1) *
                  M_PI / 180.0;
@@ -64,7 +65,7 @@ list<int> Graph::getConnectedAirports(int n){
 }
 
 
-void Graph::getClosest(int n){
+void Graph::getClosestAirport(int n) {
     int d=INT64_MAX;
     int res;
     for (int x : airports[n].connected){

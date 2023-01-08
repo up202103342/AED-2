@@ -7,11 +7,10 @@
 #include "Airport.h"
 #include "Airline.h"
 #include "Graph.h"
-#include "hashTable.cpp"
 
 using namespace std;
 
-void readAirports(hTable& hT1, Graph g) {
+Graph readAirports(hTable& hT1) {
     int n;
     ifstream infile("data/airports.csv");
     string line;
@@ -36,8 +35,8 @@ void readAirports(hTable& hT1, Graph g) {
             hT1[ap.getCode()] = ap;
         }
     }
-    g = new Graph(n);
-    return hT1;
+    Graph g(n);
+    return g;
 }
 
 void readAirlines() {
@@ -85,7 +84,6 @@ Airport getClosest(Airport ap, Graph g, hTable hT) {
 
 int main() {
     hTable hT1;
-    Graph g;
     readAirports(hT1, g);
     if(hT1.empty()) return 1;
     Airport ap = searchAp(hT1, "JFK");
