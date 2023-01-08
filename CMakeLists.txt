@@ -3,4 +3,4 @@ project(AED2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(AED2 main.cpp Graph.cpp Graph.h Airport.cpp)
+add_executable(AED2 main.cpp Graph.cpp Graph.h Airport.cpp Airport.cpp Airline.cpp Airline.h hashTable.cpp)

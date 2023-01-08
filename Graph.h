@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include "hashTable.cpp"
 
 using namespace std;
 
@@ -41,11 +42,12 @@ public:
     list<int> getShortestTrip(int src, int tgt);
     int flightsFromAirport(int n);
     int airlinesFlyingFromAirport(int n);
-    int citiesFlownToFromAirport(int n);
-    int countriesFlownToFromAirport(int n);
-    int numberOfAirportsReachableInNFLights(int src, int n);
-    int numberOfCitiesReachableInNFLights(int src, int n);
-    int numberOfCountriesReachableInNFLights(int src, int n);
+    int citiesFlownToFromAirport(int n, hTable hT);
+    int countriesFlownToFromAirport(int n, hTable hT);
+    int numberOfAirportsReachableInNFlights(int src, int n);
+    int numberOfCitiesReachableInNFlights(int src, int n, hTable hT);
+    int numberOfCountriesReachableInNFlights(int src, int n, hTable hT);
+    list<int> getLocalToLocal(int src, int tgt, string city1, string city2, float lg1, float lt1, float lg2, float lt2, hTable hT, list<string> airlines);
 
 };
 

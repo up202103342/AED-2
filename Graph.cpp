@@ -121,6 +121,62 @@ list<int> Graph::getShortestTrip(int src, int tgt, list<string> airlines) {
     return res;
 }
 
+list<int> getLocalToLocal(int src, int tgt, string city1, string city2, float lg1, float lt1, float lg2, float lt2, hTable hT, list<string> airlines) {
+    list<int> aps1;
+    list<int> aps2;
+    if (src == -1) {
+        if (lg1 == -1) {
+            for (Airport ap : hT) {
+                if ((ap.getLongitude() == lg1) && (ap.getLatitude() == lt1)) {
+                    aps1.push_back(ap.getId());
+                    break;
+                }
+            }
+        }
+        else {
+            for (Airport ap : hT) {
+                if (ap.getCity() == city1) {
+                    aps1.push_back(ap);
+                    break;
+                }
+            }
+            city1 = true;
+        }
+    }
+    else aps1.push_back(src);
+    if (tgt == -1) {
+        if (lg2 == -1) {
+            for (Airport ap : hT) {
+                if ((ap.getLongitude() == lg2) && (ap.getLatitude() == lt2)) {
+                    aps2.push_back(ap.getId());
+                    break;
+                }
+            }
+        }
+        else {
+            for (Airport ap : hT) {
+                if (ap.getCity() == city2) {
+                    aps2.push_back(ap);
+                    break;
+                }
+            }
+            city1 = true;
+        }
+    }
+    else aps2.push_back(tgt);
+    int min, s, t;
+    min = INT64_MAX;
+    for (int i : aps1) {
+        for (int j : aps2) {
+            if (getShortestTrip(i, j, airlines).size() < min) {
+                min = getShortestTrip(i, j, airlines).size();
+                s = i; t = j;
+            }
+        }
+    }
+    return getShortestTrip(s, t, airlines);
+}
+
 int Graph::flightsFromAirport(int n) {
     return airports[n].connected.size();
 }
@@ -135,9 +191,27 @@ int Graph::airlinesFlyingFromAirport(int n) {
     return airlines.size();
 }
 
-int citiesFlownToFromAirport(int n);
-int countriesFlownToFromAirport(int n);
-int numberOfAirportsReachableInNFLights(int src, int n) {
+int citiesFlownToFromAirport(int n, hTable hT) {
+    list<string> cities;
+    for (auto u : airports[n].connected) {
+        string city = searchAp(hT, u.code).getCity();
+        if (!flightInAirlines(city, cities)) {
+            cities.push_back(city);
+        }
+    }
+    return cities.size();
+}
+int countriesFlownToFromAirport(int n, hTable hT) {
+    list<string> countries;
+    for (auto u : airports[n].connected) {
+        string country = searchAp(hT, u.code).getCountry();
+        if (!flightInAirlines(country, countries)) {
+            countries.push_back(country);
+        }
+    }
+    return countries.size();
+}
+int numberOfAirportsReachableInNFlights(int src, int n) {
     bfs(src);
     int res = 0;
     for (auto a : airports) {
@@ -149,6 +223,34 @@ int numberOfAirportsReachableInNFLights(int src, int n) {
     }
     return res;
 }
-int numberOfCitiesReachableInNFLights(int src, int n);
-int numberOfCountriesReachableInNFLights(int src, int n);
+int numberOfCitiesReachableInNFlights(int src, int n, hTable hT) {
+    bfs(src);
+    list<string> cities;
+    for (int i = 1; i <= airports.size(); i++) {
+        if (airports[i].visited) {
+            if (airports[i].distance <= n) {
+                string city = searchAp(hT, airports[i].code).getCity();
+                if (!flightInAirlines(city, cities)) {
+                    cities.push_back(city);
+                }
+            }
+        }
+    }
+    return cities.size();
+}
+int numberOfCountriesReachableInNFlights(int src, int n, hTable hT) {
+    bfs(src);
+    list<string> countries;
+    for (int i = 1; i <= airports.size(); i++) {
+        if (airports[i].visited) {
+            if (airports[i].distance <= n) {
+                string country = searchAp(hT, airports[i].code).getCountry();
+                if (!flightInAirlines(country, countries)) {
+                    countries.push_back(country);
+                }
+            }
+        }
+    }
+    return countries.size();
+}
 
