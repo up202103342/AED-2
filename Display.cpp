@@ -113,8 +113,34 @@ void Display::displayLocalChegada() {
 void Display::displayVoo(hTable hT1, Graph g) {
     list<int> listFlights;
     list<string> airlines;
-    int src = hT1[apCode1].getId();
-    listFlights = g.getLocalToLocal(src, hT1[apCode2].getId(), city1, city2, coordLat1, coordLon1, coordLat2, coordLon2, hT1, airlines);
+    if (numPicked == 1 && letterPicked == "A") {
+        listFlights = g.getLocalToLocal(hT1[apCode1].getId(), hT1[apCode2].getId(), "", "", -1, -1, -1, -1, hT1, airlines);
+    }
+    else if (numPicked == 1 && letterPicked == "B") {
+        listFlights = g.getLocalToLocal(hT1[apCode1].getId(), -1, "", city2, -1, -1, -1, -1, hT1, airlines);
+    }
+    else if (numPicked == 1 && letterPicked == "C") {
+        listFlights = g.getLocalToLocal(hT1[apCode1].getId(), -1, "", "", -1, -1, coordLon2, coordLat2, hT1, airlines);
+    }
+    else if (numPicked == 2 && letterPicked == "A") {
+        listFlights = g.getLocalToLocal(-1, hT1[apCode2].getId(), city1, "", -1, -1, -1, -1, hT1, airlines);
+    }
+    else if (numPicked == 2 && letterPicked == "B") {
+        listFlights = g.getLocalToLocal(-1, -1, city1, city2, -1, -1, -1, -1, hT1, airlines);
+    }
+    else if (numPicked == 2 && letterPicked == "C") {
+        listFlights = g.getLocalToLocal(-1, -1, city1, "", -1, -1, coordLon2, coordLat2, hT1, airlines);
+    }
+    else if (numPicked == 3 && letterPicked == "A") {
+        listFlights = g.getLocalToLocal(-1, hT1[apCode2].getId(), "", "", coordLon1, coordLat1, coordLon2, coordLat2, hT1, airlines);
+    }
+    else if (numPicked == 3 && letterPicked == "B") {
+        listFlights = g.getLocalToLocal(-1, -1, "", city2, coordLon1, coordLat1, -1, -1, hT1, airlines);
+    }
+    else if (numPicked == 3 && letterPicked == "C") {
+        listFlights = g.getLocalToLocal(-1, -1, "", "", coordLon1, coordLat1, coordLon2, coordLat2, hT1, airlines);
+    }
+
     cout << '\n' << "l---------------------------------------------------------------------l";
     cout << '\n' << "|                                                                     |";
     cout << '\n' << "|                            AirTrans App                             |";

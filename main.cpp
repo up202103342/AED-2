@@ -151,6 +151,7 @@ int main() {
             cout << "Enter input:\n";
             getline(std::cin, input);
             cout << ".............\n";
+            dp.processInput(input);
             dp.displayVoo(hT1, g);
         }
     }
