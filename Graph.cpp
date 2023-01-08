@@ -150,11 +150,11 @@ list<int> Graph::getShortestTrip(int src, int tgt, list<string> airlines) { // O
     return res;
 }
 
-list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, float lg1, float lt1, float lg2, float lt2, hTable hT, list<string> airlines) { // O(V * E * (V + E))
+list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, float lt1, float lg1, float lt2, float lg2, hTable hT, list<string> airlines) { // O(V * E * (V + E))
     list<int> aps1;
     list<int> aps2;
     if (src == -1) {
-        if (lg1 == -1) {
+        if (!(lg1 == -1)) {
             for (int i = 1; i <= n; i++) {
                 if ((hT[airports[i].code].getLongitude() == lg1) && (hT[airports[i].code].getLatitude() == lt1)) {
                     aps1.push_back(hT[airports[i].code].getId());
@@ -169,12 +169,11 @@ list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, f
                     break;
                 }
             }
-            city1 = true;
         }
     }
     else aps1.push_back(src);
     if (tgt == -1) {
-        if (lg2 == -1) {
+        if (!(lg2 == -1)) {
             for (int i = 1; i <= n; i++) {
                 if ((hT[airports[i].code].getLongitude() == lg2) && (hT[airports[i].code].getLatitude() == lt2)) {
                     aps2.push_back(hT[airports[i].code].getId());
@@ -223,7 +222,7 @@ int Graph::airlinesFlyingFromAirport(int n) { // O(V * E)
 int Graph::citiesFlownToFromAirport(int n, hTable hT) { // O(V * E)
     list<string> cities;
     for (auto u : airports[n].connected) {
-        string city = hT[u.code].getCity();
+        string city = hT[airports[u.target].code].getCity();
         if (!flightInAirlines(city, cities)) {
             cities.push_back(city);
         }
@@ -233,7 +232,7 @@ int Graph::citiesFlownToFromAirport(int n, hTable hT) { // O(V * E)
 int Graph::countriesFlownToFromAirport(int n, hTable hT) { // O(V * E)
     list<string> countries;
     for (auto u : airports[n].connected) {
-        string country = hT[u.code].getCountry();
+        string country = hT[airports[u.target].code].getCountry();
         if (!flightInAirlines(country, countries)) {
             countries.push_back(country);
         }
