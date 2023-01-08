@@ -110,6 +110,134 @@ void Display::displayLocalChegada() {
     cout << '\n';
 }
 
+void Display::displayInfo() {
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                            AirTrans App                             |";
+    cout << '\n' << "|                       Escolha de Informação                         |";
+    cout << '\n' << "|---------------------------------------------------------------------|";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Escolha uma das informações seguintes:                             |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  1. Estatísticas de Aeroporto                                       |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  2. Estatíticas de Companhia Áerea                                  |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  3. Estatísticsa de País                                            |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  4. Quit                                                            |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n';
+}
+
+void Display::displayChooseInfo() {
+    string InfoType;
+    if (numPicked == 1) {
+        InfoType = "|                   Escolha o aeroporto pretendido                    |"
+                   "\n|                   (insira o code correspondente)                    |";
+    }
+    else if (numPicked == 2) {
+        InfoType = "|                     Escolha a companhia aérea pretendida            |"
+                   "\n|                   (insira o code correspondente)                    |";
+    }
+    if (numPicked == 3) {
+        InfoType = "|                 Escolha o país pretendido                           |"
+                   "\n|                                                                     |";
+    }
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                            AirTrans App                             |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|---------------------------------------------------------------------|";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << InfoType;
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  <- Go Back (0)                                                     |";
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n';
+}
+
+void Display::displayAirportInfo(Graph g, hTable hT) {
+    int a,b,c,d;
+    a=g.flightsFromAirport(hT[apCode1].getId());
+    b=g.airlinesFlyingFromAirport(hT[apCode1].getId());
+    c=g.citiesFlownToFromAirport(hT[apCode1].getId(), hT);
+    d=g.countriesFlownToFromAirport(hT[apCode1].getId(), hT);
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                            AirTrans App                             |";
+    cout << '\n' << "|                      Informações de Aeroporto                       |";
+    cout << '\n' << "|---------------------------------------------------------------------|";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Voos que saiem deste aeroporto:                                    |";
+    cout << '\n' << "|   " << a;
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Companhias aéreas que saiem deste aeroporto:                       |";
+    cout << '\n' << "|   " << b;
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Destinos diferentes:                                               |";
+    cout << '\n' << "|   " << c;
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Destinos de Países diferentes                                      |";
+    cout << '\n' << "|   " << d;
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  <- Go to Menu (9)                                                  |";
+    cout << '\n' << "|  <- Go Back (0)                                                     |";
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n';
+}
+
+void Display::displayAirlineInfo(Graph g, hTable ht) {
+    vector<int> res = g.airlineStats(apCode1, ht);
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                            AirTrans App                             |";
+    cout << '\n' << "|                      Informações de Aeroporto                       |";
+    cout << '\n' << "|---------------------------------------------------------------------|";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Número de aeroportos com esta companhia:                           |";
+    cout << '\n' << "|   " << res[0];
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Número de voos desta companhia:                                    |";
+    cout << '\n' << "|   " << res[1];
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Diametro:                                                          |";
+    cout << '\n' << "|   " << res[2];
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  <- Go to Menu (9)                                                  |";
+    cout << '\n' << "|  <- Go Back (0)                                                     |";
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n';
+}
+
+void Display::displayCountryInfo(Graph g, hTable hT) {
+    vector<int> res = g.countryStats(city1, hT);
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|                            AirTrans App                             |";
+    cout << '\n' << "|                      Informações de Aeroporto                       |";
+    cout << '\n' << "|---------------------------------------------------------------------|";
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Número de aeroportos neste país        :                           |";
+    cout << '\n' << "|   " << res[0];
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Número de companhias diferentes em aeroportos deste país:          |";
+    cout << '\n' << "|   " << res[1];
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  Número de voos totais a sair deste país:                           |";
+    cout << '\n' << "|   " << res[2];
+    cout << '\n' << "|                                                                     |";
+    cout << '\n' << "|  <- Go to Menu (9)                                                  |";
+    cout << '\n' << "|  <- Go Back (0)                                                     |";
+    cout << '\n' << "l---------------------------------------------------------------------l";
+    cout << '\n';
+}
+
 void Display::displayVoo(hTable hT1, Graph g) {
     list<int> listFlights;
     list<string> airlines;
@@ -160,10 +288,6 @@ void Display::displayVoo(hTable hT1, Graph g) {
     cout << '\n' << "|  <- Go Back (0)                                                     |";
     cout << '\n' << "l---------------------------------------------------------------------l";
     cout << '\n';
-}
-
-void Display::displayInfo() {
-
 }
 
 void Display::displayAbout() {
@@ -305,6 +429,34 @@ void Display::processInput(string input) {
     }
     else if (state=="localChegada" && letterPicked=="B") {
         city2 = input;
+        setState("localChegada");
+    }
+    else if (input=="1" && state=="info") {
+        setNumPicked(2);
+        setState("insertAirpoirt");
+    }
+    else if (input=="2" && state=="info") {
+        setNumPicked(2);
+
+        setState("insertAirline");
+    }
+    else if (input=="3" && state=="info") {
+        setNumPicked(3);
+        city1 = input;
+        setState("insertCountry");
+    }
+
+        //-------------------------------------------------
+    else if (state=="insertAirport") {
+        apCode1 = input;
+        setState("localChegada");
+    }
+    else if (state=="insertAirline") {
+        apCode1 = input;
+        setState("localChegada");
+    }
+    else if (state=="insertCountry") {
+        city1 = input;
         setState("localChegada");
     }
 }

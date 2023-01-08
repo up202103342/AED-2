@@ -154,6 +154,10 @@ int main() {
             dp.processInput(input);
             dp.displayVoo(hT1, g);
         }
+        else if (dp.getState()=="info") dp.displayInfo();
+        else if (dp.getState()=="insertAirport") dp.displayChooseInfo(), dp.displayAirportInfo(g, hT1);
+        else if (dp.getState()=="insertAirline") dp.displayChooseInfo(), dp.displayAirlineInfo(g, hT1);
+        else if (dp.getState()=="insertCountry") dp.displayChooseInfo(), dp.displayCountryInfo(g, hT1);
     }
     return 0;
 }

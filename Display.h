@@ -69,6 +69,14 @@ public:
     void setCity2(const string &city2);
 
     void reset();
+
+    void displayChooseInfo();
+
+    void displayAirportInfo(Graph g, hTable ht);
+
+    void displayAirlineInfo(Graph g, hTable ht);
+
+    void displayCountryInfo(Graph g, hTable hT);
 };
 
 
