@@ -66,8 +66,8 @@ void readFlights(Graph g, hTable hT) { // O(E)
             string Source,Target,Airline;
             iss >> Source >> Target >> Airline;
 
-            int src = searchAp(hT, Source).getId();
-            int tgt = searchAp(hT, Target).getId();
+            int src = hT[Source].getId();
+            int tgt = hT[Target].getId();
             g.addFlight(src, tgt, Airline);
         }
     }
@@ -82,7 +82,7 @@ int main() {
     hTable hT1;
     readAirports(hT1);
     if(hT1.empty()) return 1;
-    Airport ap = searchAp(hT1, "JFK");
+    Airport ap = hT1["JFK"];
     cout << ap.getName();
     return 0;
 }

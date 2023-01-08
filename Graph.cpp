@@ -97,9 +97,9 @@ list<int> Graph::getConnectedAirports(int n){ // O(E)
 int Graph::getClosestAirport(int n, hTable hT) { // O(E)
     int d=INT32_MAX;
     int res;
-    auto src = searchAp(hT, airports[n].code);
+    auto src = hT[airports[n].code];
     for (Flight x : airports[n].connected){
-        auto ap = searchAp(hT, airports[x.target].code);
+        auto ap = hT[airports[x.target].code];
         if (d > haversine(src.getLatitude(), src.getLongitude(), ap.getLatitude(), ap.getLongitude())) {
             d = haversine(src.getLatitude(), src.getLongitude(), ap.getLatitude(), ap.getLongitude());
             res = x.target;
@@ -219,7 +219,7 @@ int Graph::airlinesFlyingFromAirport(int n) { // O(V * E)
 int Graph::citiesFlownToFromAirport(int n, hTable hT) { // O(V * E)
     list<string> cities;
     for (auto u : airports[n].connected) {
-        string city = searchAp(hT, u.code).getCity();
+        string city = hT[u.code].getCity();
         if (!flightInAirlines(city, cities)) {
             cities.push_back(city);
         }
@@ -229,7 +229,7 @@ int Graph::citiesFlownToFromAirport(int n, hTable hT) { // O(V * E)
 int Graph::countriesFlownToFromAirport(int n, hTable hT) { // O(V * E)
     list<string> countries;
     for (auto u : airports[n].connected) {
-        string country = searchAp(hT, u.code).getCountry();
+        string country = hT[u.code].getCountry();
         if (!flightInAirlines(country, countries)) {
             countries.push_back(country);
         }
@@ -254,7 +254,7 @@ int Graph::numberOfCitiesReachableInNFlights(int src, int n, hTable hT) { // O(V
     for (int i = 1; i <= airports.size(); i++) {
         if (airports[i].visited) {
             if (airports[i].distance <= n) {
-                string city = searchAp(hT, airports[i].code).getCity();
+                string city = hT[airports[i].code].getCity();
                 if (!flightInAirlines(city, cities)) {
                     cities.push_back(city);
                 }
@@ -269,7 +269,7 @@ int Graph::numberOfCountriesReachableInNFlights(int src, int n, hTable hT) { // 
     for (int i = 1; i <= airports.size(); i++) {
         if (airports[i].visited) {
             if (airports[i].distance <= n) {
-                string country = searchAp(hT, airports[i].code).getCountry();
+                string country = hT[airports[i].code].getCountry();
                 if (!flightInAirlines(country, countries)) {
                     countries.push_back(country);
                 }
