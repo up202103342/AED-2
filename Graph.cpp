@@ -261,3 +261,115 @@ int Graph::numberOfCountriesReachableInNFlights(int src, int n, hTable hT) {
     return countries.size();
 }
 
+vector<int> Graph::countryStats(string country, hTable hT) {
+    vector<int> res;
+    list<int> aps;
+    list<string> arl;
+    int flt = 0;
+    for (int i = 1; i <= n; i++) {
+        if (hT[airports[i].code].getCountry() == country) {
+            aps.push_back(i);
+        }
+    }
+    for (int i : aps) {
+        flt += flightsFromAirport(i);
+        for (auto f : airports[i].connected) {
+            if (!flightInAirlines(f.code, arl)) {
+                arl.push_back(f.code);
+            }
+        }
+    }
+    res.push_back(aps.size());
+    res.push_back(arl.size());
+    res.push_back(flt);
+    return res;
+}
+
+int Graph::airlineDiameter(string airline) {
+    int max = 0;
+    for (int v = 1; v <= n; v++) {
+        for (int i = 1; i <= n; i++) { airports[i].visited = false; airports[i].distance = 0; }
+        queue<int> q; // queue of unvisited airports
+        q.push(v);
+        airports[v].distance = 0;
+        airports[v].visited = true;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (auto e: airports[u].connected) {
+                int w = e.target;
+                if ((!airports[w].visited) && (e.code == airline)) {
+                    q.push(w);
+                    airports[w].visited = true;
+                    airports[w].distance = airports[u].distance + 1;
+                }
+            }
+        }
+        for (int i = 1; i <= n; i++) {
+            if (max < airports[i].distance) {
+                max = airports[i].distance;
+            }
+        }
+    }
+    return max;
+}
+vector<int> Graph::airlineStats(string airline, hTable hT) {
+    vector<int> res;
+    int aps = 0;
+    int flt = 0;
+    for (int i = 1; i <= n; i++) {
+        bool hasAirline = false;
+        for (auto f : airports[i].connected) {
+            if (f.code == airline) {
+                flt += 1;
+                if (!hasAirline) {
+                    aps += 1;
+                    hasAirline = true;
+                }
+            }
+        }
+    }
+    int diameter = airlineDiameter(airline);
+    res.push_back(aps);
+    res.push_back(flt);
+    res.push_back(diameter);
+    return res;
+}
+
+bool intInVector(int a, vector<int> v) {
+    for (int i : v) {
+        if (a == i) return true;
+    }
+    return false;
+}
+
+vector<int> Graph::topKAirportsWithMoreFlights(int k) {
+    vector<int> res;
+    for (int i = 0; i < k; i++) {
+        int max = 0;
+        int id = 0;
+        for (int j = 1; j <= n; j++) {
+            if ((flightsFromAirport(j) > max) && (!intInVector(j, res))) {
+                max = flightsFromAirport(j);
+                id = j;
+            }
+        }
+        res.push_back(id);
+    }
+    return res;
+}
+vector<int> Graph::topKAirportsWithMoreAirlines(int k) {
+    vector<int> res;
+    for (int i = 0; i < k; i++) {
+        int max = 0;
+        int id = 0;
+        for (int j = 1; j <= n; j++) {
+            if ((airlinesFlyingFromAirport(j) > max) && (!intInVector(j, res))) {
+                max = airlinesFlyingFromAirport(j);
+                id = j;
+            }
+        }
+        res.push_back(id);
+    }
+    return res;
+}

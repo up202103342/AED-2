@@ -78,10 +78,6 @@ Airport getClosest(Airport ap, Graph g, hTable hT) {
     return hT[g.airportIDToCode(n)];
 }
 
-
-
-
-
 int main() {
     hTable hT1;
     readAirports(hT1);
