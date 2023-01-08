@@ -7,6 +7,7 @@
 #include "Airport.h"
 #include "Airline.h"
 #include "Graph.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -132,6 +133,23 @@ int main() {
     readFlights(g, hT1);
     for (auto ap : hT1) {
         g.setAirportCode((ap.second).getId(), (ap.second).getCode());
+    }
+    Display dp;
+    dp.displayMenu();
+    string input;
+    cout << '\n';
+    while (!(dp.getState() == "menu" && input == "Quit")) {
+        cout << "Enter input:\n";
+        getline(std::cin, input);
+        cout << ".............\n";
+        dp.processInput(input);
+        if (dp.getState()=="menu") dp.displayMenu();
+        else if (dp.getState()=="locais") dp.displayLocais();
+        else if (dp.getState()=="localPartida") dp.displayLocalPartida();
+        else if (dp.getState()=="localChegada") {
+            dp.displayLocalChegada();
+            dp.displayVoo();
+        }
     }
     return 0;
 }

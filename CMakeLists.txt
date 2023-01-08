@@ -5,4 +5,5 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(AED2 main.cpp Graph.cpp Graph.h Airport.h Airport.cpp Airline.cpp Airline.h hashTable.cpp)
+add_executable(AED2 main.cpp Graph.cpp Graph.h Airport.h Airport.cpp Airline.cpp Airline.h hashTable.cpp Display.h Display.cpp)
+
