@@ -63,3 +63,4 @@ float Airport::getLatitude() const{
 float Airport::getLongitude() const{
     return longitude;
 }
+
