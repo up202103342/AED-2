@@ -23,21 +23,21 @@ class Graph {
         int distance;   // Distance from source airport on a search
     };
 
-    int n;              // Graph size (airports are numbered from 1 to n)
-    vector<Airport> airports; // The list of airports being represented
+    int n;              /** Graph size (airports are numbered from 1 to n) */
+    vector<Airport> airports; /** The list of airports being represented */
 
 public:
-    // Default constructor
+    /** Default constructor */
     Graph();
-    // Constructor: nr airports
+    /** Constructor: nr airports */
     Graph(int airports);
 
-    // Add Flight from source to target
+    /** Add Flight from source to target */
     void addFlight(int src, int trgt, string code);
 
     void setAirportCode(int n, string code);
 
-    // Breadth-First Search
+    /** Breadth-First Search */
     void bfs(int v);
 
     list<int> getConnectedAirports(int n);

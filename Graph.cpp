@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include <queue>
 #include "cmath"
-//Esta funcao calcula a distancia geografica entre dois tuplos de coordenadas. Complexidade temporal: O(1)
+/** Esta funcao calcula a distancia geografica entre dois tuplos de coordenadas. Complexidade temporal: O(1) */
 static float haversine(float lat1, float lon1,
                        float lat2, float lon2)
 {
@@ -24,31 +24,31 @@ static float haversine(float lat1, float lon1,
     float c = 2 * asin(sqrt(a));
     return rad * c;
 }
-// Default constructor. Complexidade temporal: O(1)
+/** Default constructor. Complexidade temporal: O(1) */
 Graph::Graph() {}
 
-// Constructor: nr airports and direction (default: undirected). Complexidade temporal: O(1)
+/** Constructor: nr airports and direction (default: undirected). Complexidade temporal: O(1) */
 Graph::Graph(int num) : n(num), airports(num+1) { // O(1)
 }
 
-//Esta funcao devolve o codigo do aeroporto com id n. Complexidade temporal: O(1)
+/** Esta funcao devolve o codigo do aeroporto com id n. Complexidade temporal: O(1) */
 string Graph::airportIDToCode(int n) {
     return airports[n].code;
 }
 
-//Complexidade temporal: O(1)
+/** Complexidade temporal: O(1) */
 void Graph::setAirportCode(int n, string code) {
     airports[n].code = code;
 }
 
-//Esta funcao adiciona um voo ao grafo. Complexidade temporal: O(1)
+/** Esta funcao adiciona um voo ao grafo. Complexidade temporal: O(1) */
 void Graph::addFlight(int src, int trgt, string code) {
     if (src<1 || src>n || trgt<1 || trgt>n) return;
     airports[src].connected.push_back({trgt, code});
 }
 
 
-// Esta funcao e um modelo de breadth-first search, no entanto nao e utilizada.
+/**  Esta funcao e um modelo de breadth-first search, no entanto nao e utilizada. */
 void Graph::bfs(int v) {
     for (int i=1; i<=n; i++) airports[i].visited = false;
     queue<int> q; // queue of unvisited airports
@@ -68,14 +68,14 @@ void Graph::bfs(int v) {
     }
 }
 
-//Esta funcao determina se o int a e uma das entradas do vetor v. Complexidade temporal: O(n)
+/** Esta funcao determina se o int a e uma das entradas do vetor v. Complexidade temporal: O(n) */
 bool intInVector(int a, vector<int> v) {
     for (int i : v) {
         if (a == i) return true;
     }
     return false;
 }
-//Esta funcao determina se o int a e uma das entradas da lista l. Complexidade temporal: O(n)
+/** Esta funcao determina se o int a e uma das entradas da lista l. Complexidade temporal: O(n) */
 bool intInList(int a, list<int> l) {
     for (int i : l) {
         if (a == i) return true;
@@ -83,14 +83,16 @@ bool intInList(int a, list<int> l) {
     return false;
 }
 
-//Esta funcao determina se o string code e uma das entradas da lista airlines. Complexidade temporal: O(n)
+/** Esta funcao determina se o string code e uma das entradas da lista airlines. Complexidade temporal: O(n) */
 bool Graph::flightInAirlines(string code, list<string> airlines) {
     for (string s : airlines) {
         if (s == code) { return true; }
     }
     return false;
 }
-//Esta funcao determina os aeroportos atingiveis com apenas 1 voo a partir de um dado aeroporto. Complexidade temporal: O(E)
+/** Esta funcao determina os aeroportos atingiveis com apenas 1 voo a partir de um dado aeroporto.
+ * Complexidade temporal: O(E)
+ */
 list<int> Graph::getConnectedAirports(int n){
     list<int> aps;
     for(auto a : airports[n].connected) {
@@ -101,7 +103,7 @@ list<int> Graph::getConnectedAirports(int n){
     return aps;
 }
 
-//Esta funcao determina o aeroporto geograficamente mais proximo a um dado aeroporto. Complexidade temporal: O(E)
+/** Esta funcao determina o aeroporto geograficamente mais proximo a um dado aeroporto. Complexidade temporal: O(E) */
 int Graph::getClosestAirport(int n, hTable hT) {
     int d=INT32_MAX;
     int res;
@@ -115,7 +117,9 @@ int Graph::getClosestAirport(int n, hTable hT) {
     }
     return res;
 }
-//Esta funcao determina a ultima etapa do caminho mais curto (em numero de voos) entre dois aeroportos. Complexidade temporal: O(V + E)
+/** Esta funcao determina a ultima etapa do caminho mais curto (em numero de voos) entre dois aeroportos.
+ * Complexidade temporal: O(V + E)
+ */
 int Graph::lastStop(int src, int tgt, list<string> airlines) {
     bool all_airlines = false;
     if (airlines.size() == 0) all_airlines = true;
@@ -142,7 +146,9 @@ int Graph::lastStop(int src, int tgt, list<string> airlines) {
     }
     return -1;
 }
-//Esta funcao determina o caminho mais curto (em numero de voos) entre dois aeroportos. Complexidade temporal: O(E * (V + E))
+/** Esta funcao determina o caminho mais curto (em numero de voos) entre dois aeroportos.
+ * Complexidade temporal: O(E * (V + E))
+ */
 list<int> Graph::getShortestTrip(int src, int tgt, list<string> airlines) {
     list<int> res;
     if (lastStop(src, tgt, airlines) == -1) { return res;}
@@ -154,7 +160,10 @@ list<int> Graph::getShortestTrip(int src, int tgt, list<string> airlines) {
     return res;
 }
 
-//Dados dois locais sobre forma de aeroporto, cidade ou coordenadas, esta funcao calcula o percurso com menos voos entre os dois locais. E possivel limitar os voos a certas companhias. Complexidade temporal: O(V * E * (V + E))
+/** Dados dois locais sobre forma de aeroporto, cidade ou coordenadas, esta funcao calcula o percurso com menos voos
+  entre os dois locais. E possivel limitar os voos a certas companhias.
+ * Complexidade temporal: O(V * E * (V + E))
+ */
 list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, float lt1, float lg1, float lt2, float lg2, hTable hT, list<string> airlines) {
     list<int> aps1;
     list<int> aps2;
@@ -210,12 +219,14 @@ list<int> Graph::getLocalToLocal(int src, int tgt, string city1, string city2, f
     return getShortestTrip(s, t, airlines);
 }
 
-//Esta funcao retorna o numero de voos que partem de um determinado aeroporto. Complexidade temporal: O(1)
+/** Esta funcao retorna o numero de voos que partem de um determinado aeroporto. Complexidade temporal: O(1) */
 int Graph::flightsFromAirport(int n) {
     return airports[n].connected.size();
 }
 
-//Esta funcao calcula o numero de companhias aereas que tem pelo menos um voo a partir de um determinado aeroporto. Complexidade temporal: O(V * E)
+/** Esta funcao calcula o numero de companhias aereas que tem pelo menos um voo a partir de um determinado aeroporto.
+ *  Complexidade temporal: O(V * E)
+ */
 int Graph::airlinesFlyingFromAirport(int n) {
     list<string> airlines;
     for (Flight u : airports[n].connected) {
@@ -226,7 +237,9 @@ int Graph::airlinesFlyingFromAirport(int n) {
     return airlines.size();
 }
 
-//Esta funcao determina quantas cidades se pode atingir a partir de um determinado aeroporto com apenas 1 voo. Complexidade temporal: O(V * E)
+/** Esta funcao determina quantas cidades se pode atingir a partir de um determinado aeroporto com apenas 1 voo.
+ * Complexidade temporal: O(V * E)
+ */
 int Graph::citiesFlownToFromAirport(int n, hTable hT) {
     list<string> cities;
     for (auto u : airports[n].connected) {
@@ -237,7 +250,9 @@ int Graph::citiesFlownToFromAirport(int n, hTable hT) {
     }
     return cities.size();
 }
-//Esta funcao determina quantos paises se pode atingir a partir de um determinado aeroporto com apenas 1 voo. Complexidade temporal: O(V * E)
+/** Esta funcao determina quantos paises se pode atingir a partir de um determinado aeroporto com apenas 1 voo.
+ * Complexidade temporal: O(V * E)
+ */
 int Graph::countriesFlownToFromAirport(int n, hTable hT) {
     list<string> countries;
     for (auto u : airports[n].connected) {
@@ -248,7 +263,9 @@ int Graph::countriesFlownToFromAirport(int n, hTable hT) {
     }
     return countries.size();
 }
-//Esta funcao determina quantos aeroportos podem ser atingidos em n voos a partir de um determinado aeroporto. Complexidade temporal: O(V + E)
+/** Esta funcao determina quantos aeroportos podem ser atingidos em n voos a partir de um determinado aeroporto.
+ * Complexidade temporal: O(V + E)
+ */
 int Graph::numberOfAirportsReachableInNFlights(int src, int n) {
     bfs(src);
     int res = 0;
@@ -261,7 +278,9 @@ int Graph::numberOfAirportsReachableInNFlights(int src, int n) {
     }
     return res;
 }
-//Esta funcao determina quantas cidades podem ser atingidas em n voos a partir de um determinado aeroporto. Complexidade temporal: O(V + E)
+/** Esta funcao determina quantas cidades podem ser atingidas em n voos a partir de um determinado aeroporto.
+ * Complexidade temporal: O(V + E)
+ */
 int Graph::numberOfCitiesReachableInNFlights(int src, int n, hTable hT) {
     bfs(src);
     list<string> cities;
@@ -277,7 +296,9 @@ int Graph::numberOfCitiesReachableInNFlights(int src, int n, hTable hT) {
     }
     return cities.size();
 }
-//Esta funcao determina quantos paises podem ser atingidos em n voos a partir de um determinado aeroporto. Complexidade temporal: O(V + E)
+/** Esta funcao determina quantos paises podem ser atingidos em n voos a partir de um determinado aeroporto.
+ * Complexidade temporal: O(V + E)
+ */
 int Graph::numberOfCountriesReachableInNFlights(int src, int n, hTable hT) {
     bfs(src);
     list<string> countries;
@@ -294,7 +315,10 @@ int Graph::numberOfCountriesReachableInNFlights(int src, int n, hTable hT) {
     return countries.size();
 }
 
-//Esta funcao calcula o numero de aeroportos de um determinado pais, assim como o numero de companhias que ai operam e o numero de voos que partem do pais. Complexidade temporal: O(V * E)
+/** Esta funcao calcula o numero de aeroportos de um determinado pais, assim como o numero de companhias que ai operam
+  e o numero de voos que partem do pais.
+ *  Complexidade temporal: O(V * E)
+ */
 vector<int> Graph::countryStats(string country, hTable hT) {
     vector<int> res;
     list<int> aps;
@@ -318,7 +342,9 @@ vector<int> Graph::countryStats(string country, hTable hT) {
     res.push_back(flt);
     return res;
 }
-//Esta funcao determina o diametro da rede de voos de uma companhia. Complexidade temporal: O(V * (V + E))
+/** Esta funcao determina o diametro da rede de voos de uma companhia.
+ * Complexidade temporal: O(V * (V + E))
+ */
 int Graph::airlineDiameter(string airline) {
     int max = 0;
     for (int v = 1; v <= n; v++) {
@@ -347,7 +373,9 @@ int Graph::airlineDiameter(string airline) {
     }
     return max;
 }
-//Esta funcao calcula o numero de aeroportos em que uma companhia atua, assim como os voos que opera e o seu diametro. Complexidade temporal: O(V * (V + E))
+/** Esta funcao calcula o numero de aeroportos em que uma companhia atua, assim como os voos que opera e o seu diametro.
+ *  Complexidade temporal: O(V * (V + E))
+ */
 vector<int> Graph::airlineStats(string airline, hTable hT) {
     vector<int> res;
     int aps = 0;
@@ -371,7 +399,9 @@ vector<int> Graph::airlineStats(string airline, hTable hT) {
     return res;
 }
 
-//Esta funcao calcula o top K de aeroportos com mais voos. Complexidade temporal: O(V^2)
+/** Esta funcao calcula o top K de aeroportos com mais voos.
+ * Complexidade temporal: O(V^2)
+ */
 vector<int> Graph::topKAirportsWithMoreFlights(int k) {
     vector<int> res;
     for (int i = 0; i < k; i++) {
@@ -387,7 +417,9 @@ vector<int> Graph::topKAirportsWithMoreFlights(int k) {
     }
     return res;
 }
-//Esta funcao calcula o top K de aeroportos com mais companhias a atuar neles. Complexidade temporal: O(V^3 * E)
+/** Esta funcao calcula o top K de aeroportos com mais companhias a atuar neles.
+ * Complexidade temporal: O(V^3 * E)
+ */
 vector<int> Graph::topKAirportsWithMoreAirlines(int k) {
     vector<int> res;
     for (int i = 0; i < k; i++) {

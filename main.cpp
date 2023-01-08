@@ -1,8 +1,9 @@
+/** \file main.cpp
+ * File containing the read-functions and main.
+ */
+
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
-#include <cmath>
 
 #include "Airport.h"
 #include "Airline.h"
@@ -11,7 +12,9 @@
 
 using namespace std;
 
-//Esta funcao le o ficheiro airports.csv e introduz os dados na hash table, criando ed evolvendo depois o grafo. Complexidade temporal: O(V * n)
+/**Esta funcao le o ficheiro airports.csv e introduz os dados na hash table, criando ed evolvendo depois o grafo.
+ * Complexidade temporal: O(V * n)
+ */
 Graph readAirports(hTable& hT1) { // O(V * n)
     int n = 0;
     ifstream infile("data/airports.csv");
@@ -20,14 +23,14 @@ Graph readAirports(hTable& hT1) { // O(V * n)
     while (getline(infile, line)) {
         if (first) { first = false;}
         else {
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ' ') {
-                    line[i] = '_';
+            for (char & i : line) {
+                if (i == ' ') {
+                    i = '_';
                 }
             }
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ',') {
-                    line[i] = ' ';
+            for (char & i : line) {
+                if (i == ',') {
+                    i = ' ';
                 }
             }
             istringstream iss(line);
@@ -35,19 +38,19 @@ Graph readAirports(hTable& hT1) { // O(V * n)
             float Latitude,Longitude;
             iss >> Code >> Name >> City >> Country >> Latitude >> Longitude;
             n++;
-            for (int i = 0; i < Name.length(); ++i) {
-                if (Name[i] == '_') {
-                    Name[i] = ' ';
+            for (char & i : Name) {
+                if (i == '_') {
+                    i = ' ';
                 }
             }
-            for (int i = 0; i < City.length(); ++i) {
-                if (City[i] == '_') {
-                    City[i] = ' ';
+            for (char & i : City) {
+                if (i == '_') {
+                    i = ' ';
                 }
             }
-            for (int i = 0; i < Country.length(); ++i) {
-                if (Country[i] == '_') {
-                    Country[i] = ' ';
+            for (char & i : Country) {
+                if (i == '_') {
+                    i = ' ';
                 }
             }
             Airport ap = Airport(n, Code, Name, City, Country, Latitude, Longitude);
@@ -58,7 +61,7 @@ Graph readAirports(hTable& hT1) { // O(V * n)
     return g;
 }
 
-//Esta funcao le o ficheiro airlines.csv e introduz os dados no vetor airlines. Complexidade temporal: O(n^2)
+/** Esta funcao le o ficheiro airlines.csv e introduz os dados no vetor airlines. Complexidade temporal: O(n^2) */
 void readAirlines(vector<Airline> & airlines) { // O(n^2)
     ifstream infile("data/airlines.csv");
     string line;
@@ -66,28 +69,28 @@ void readAirlines(vector<Airline> & airlines) { // O(n^2)
     while (getline(infile, line)) {
         if (first) { first = false;}
         else {
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ' ') {
-                    line[i] = '_';
+            for (char & i : line) {
+                if (i == ' ') {
+                    i = '_';
                 }
             }
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ',') {
-                    line[i] = ' ';
+            for (char & i : line) {
+                if (i == ',') {
+                    i = ' ';
                 }
             }
             istringstream iss(line);
             string Code,Name,Callsign,Country;
             iss >> Code >> Name >> Callsign >> Country;
 
-            for (int i = 0; i < Name.length(); ++i) {
-                if (Name[i] == '_') {
-                    Name[i] = ' ';
+            for (char & i : Name) {
+                if (i == '_') {
+                    i = ' ';
                 }
             }
-            for (int i = 0; i < Country.length(); ++i) {
-                if (Country[i] == '_') {
-                    Country[i] = ' ';
+            for (char & i : Country) {
+                if (i == '_') {
+                    i = ' ';
                 }
             }
             Airline al = Airline(Code, Name, Callsign, Country);
@@ -95,7 +98,7 @@ void readAirlines(vector<Airline> & airlines) { // O(n^2)
         }
     }
 }
-//Esta funcao le o ficheiro flights.csv e introduz os dados no grafo. Complexidade temporal: O(E * n)
+/** Esta funcao le o ficheiro flights.csv e introduz os dados no grafo. Complexidade temporal: O(E * n)*/
 void readFlights(Graph &g, hTable &hT) { // O(E * n)
     ifstream infile("data/flights.csv");
     string line;
@@ -103,9 +106,9 @@ void readFlights(Graph &g, hTable &hT) { // O(E * n)
     while (getline(infile, line)) {
         if (first) { first = false;}
         else {
-            for (int i = 0; i < line.length(); ++i) {
-                if (line[i] == ',') {
-                    line[i] = ' ';
+            for (char & i : line) {
+                if (i == ',') {
+                    i = ' ';
                 }
             }
             istringstream iss(line);
@@ -119,8 +122,8 @@ void readFlights(Graph &g, hTable &hT) { // O(E * n)
     }
 }
 
-//Esta funcao devolve o aeroporto mais proximo a um dado aeroporto. Complexidade temporal: O(E)
-Airport getClosest(Airport ap, Graph g, hTable hT) { // O(E)
+/** Esta funcao devolve o aeroporto mais proximo a um dado aeroporto. Complexidade temporal: O(E) */
+Airport getClosest(const Airport& ap, Graph g, hTable hT) { // O(E)
     int n = g.getClosestAirport(ap.getId(), hT);
     return hT[g.airportIDToCode(n)];
 }
@@ -131,7 +134,7 @@ int main() {
     Graph g = readAirports(hT1);
     readAirlines(airlines);
     readFlights(g, hT1);
-    for (auto ap : hT1) {
+    for (const auto& ap : hT1) {
         g.setAirportCode((ap.second).getId(), (ap.second).getCode());
     }
     Display dp;
@@ -154,10 +157,10 @@ int main() {
             dp.processInput(input);
             dp.displayVoo(hT1, g);
         }
-        else if (dp.getState()=="info") dp.displayInfo();
-        else if (dp.getState()=="insertAirport") dp.displayChooseInfo(), dp.displayAirportInfo(g, hT1);
-        else if (dp.getState()=="insertAirline") dp.displayChooseInfo(), dp.displayAirlineInfo(g, hT1);
-        else if (dp.getState()=="insertCountry") dp.displayChooseInfo(), dp.displayCountryInfo(g, hT1);
-    }
+
+    }else if (dp.getState()=="info") dp.displayInfo();
+    else if (dp.getState()=="insertAirport") dp.displayChooseInfo(), dp.displayAirportInfo(g, hT1);
+    else if (dp.getState()=="insertAirline") dp.displayChooseInfo(), dp.displayAirlineInfo(g, hT1);
+    else if (dp.getState()=="insertCountry") dp.displayChooseInfo(), dp.displayCountryInfo(g, hT1);
     return 0;
 }
